@@ -1,0 +1,19 @@
+{
+    "timeZone": "Europe/Berlin",
+    "dependencies": {
+      "enabledAdvancedServices": [
+        {
+          "userSymbol": "People",
+          "version": "v1",
+          "serviceId": "peopleapi"
+        },
+        {
+          "userSymbol": "Calendar",
+          "version": "v3",
+          "serviceId": "calendar"
+        }
+      ]
+    },
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8"
+  }
