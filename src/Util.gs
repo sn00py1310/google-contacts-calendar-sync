@@ -1,6 +1,6 @@
 const properties = PropertiesService.getScriptProperties();
 
-const noYearDefaultYear = 1904; // To have leap year support
+const noYearDefaultYear = 1896; // To have leap year support
 const localFormat = "de-DE";
 const APP_NAME = "Google Contacts to Calendar Sync";
 const SEARCH_INDICATOR_PREFIX = "CONTACTS_SYNC_SEARCH_INDICATOR=";
