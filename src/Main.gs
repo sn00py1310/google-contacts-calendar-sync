@@ -143,7 +143,8 @@ function deleteForMultiple(calendarId, peopleList){
     nextPageToken = response.nextPageToken;
 
     console.log('Events found %s for search: %s on calendar %s', response.items.length, calendarSearch, calendarId); 
-    
+    if (!response.items.length) continue;
+
     for(person of peopleList){
       let search = SEARCH_INDICATOR_PREFIX + person.resourceName;
       console.log("For %s with search: %s", person.names[0].displayName, search);

@@ -27,7 +27,7 @@ function dynamicStringFormat(template, ...args){
 }
 
 function formatDate(date){
-  return date.toISOString().split('T')[0]
+  return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
 }
 
 function getDateFromSingleValues(day, month, year){
@@ -41,5 +41,5 @@ function getDateFromSingleValues(day, month, year){
 }
 
 function testTMP(){
-  console.log(getDateFromSingleValues(31, 0, 2024))
+  console.log(formatDate(getDateFromSingleValues(3, 9, 2004)))
 }
