@@ -1,8 +1,6 @@
 const properties = PropertiesService.getScriptProperties();
 
-const maxDate = new Date(8640000000000000);
-const minDate = new Date(-8640000000000000);
-const noYearDefaultYear = 1900;
+const noYearDefaultYear = 1904; // To have leap year support
 const localFormat = "de-DE";
 const APP_NAME = "Google Contacts to Calendar Sync";
 const SEARCH_INDICATOR_PREFIX = "CONTACTS_SYNC_SEARCH_INDICATOR=";
@@ -34,10 +32,14 @@ function formatDate(date){
 
 function getDateFromSingleValues(day, month, year){
   let date = new Date();
-  date.setDate(day);
-  date.setMonth(month);
-
   date.setFullYear(noYearDefaultYear);
   if (year) date.setFullYear(year);
+  date.setMonth(month);
+  date.setDate(day);
+
   return date;
+}
+
+function testTMP(){
+  console.log(getDateFromSingleValues(31, 0, 2024))
 }
