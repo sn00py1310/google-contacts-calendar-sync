@@ -12,8 +12,15 @@ function getSyncToken(){
   return token;
 }
 
+function getSyncTokenIssued(){
+  let token = properties.getProperty("syncTokenIssued");
+  if (token == undefined || token == null || token == "") return 0;
+  return token;
+}
+
 function setSyncToken(syncToken){
   properties.setProperty("syncToken", syncToken);
+  properties.setProperty("syncTokenIssued", Date.now());
 }
 
 function getCalendarIndicator(){
@@ -40,6 +47,6 @@ function getDateFromSingleValues(day, month, year){
   return date;
 }
 
-function testTMP(){
-  console.log(formatDate(getDateFromSingleValues(3, 9, 2004)))
+function isSyncTokenToOld(syncTokenIssued){
+  return Date.now() - syncTokenIssued > 5*24*60*60
 }

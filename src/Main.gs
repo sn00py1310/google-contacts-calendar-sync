@@ -2,14 +2,14 @@
  * Gets a list of people in the user's contacts.
  * @see https://developers.google.com/people/api/rest/v1/people.connections/list
  */
-function getChangedPeople() {
+function getChangedPeople(syncToken) {
   let nextPageToken = undefined;
   let peopleList = [];
   let nextSyncToken;
 
   do {
     const con = People.People.Connections.list('people/me', {
-      personFields: 'metadata,names,events,birthdays', requestSyncToken: true, pageToken: nextPageToken, syncToken: getSyncToken()
+      personFields: 'metadata,names,events,birthdays', requestSyncToken: true, pageToken: nextPageToken, syncToken: syncToken
     });
 
     nextPageToken = con.nextPageToken;
@@ -186,14 +186,15 @@ function createForSingle(calendarId, person){
 
 function deleteAndCreate(allowedCalendarIds, peopleList){
   for(calendarId of allowedCalendarIds){
-    deleteForMultiple(calendarId, peopleList);  
+    deleteForMultiple(calendarId, peopleList);
     createForMultiple(calendarId, peopleList);
   }
 }
 
 function main(){
 
-  let peopleListData = getChangedPeople();
+  let peopleListData = getChangedPeople(getSyncToken());
+  let newSyncToken = peopleListData.syncToken;
   let peopleList = peopleListData.peopleList;
 
   // Get the list of connections/contacts of user's profile
@@ -207,5 +208,11 @@ function main(){
   let allowedCalendarsIds = getAllowedCalendarIds();
   if(peopleList.length) deleteAndCreate(allowedCalendarsIds, peopleList);
 
-  if (peopleListData.syncToken) setSyncToken(peopleListData.syncToken);
+  // Maybe possible race condition
+  if (getSyncToken() === newSyncToken && isSyncTokenToOld(getSyncTokenIssued())){
+    console.log("SyncToken to old, getting a new one.");
+    newSyncToken = getChangedPeople("").syncToken;
+  }
+
+  if (getSyncToken() !== newSyncToken) setSyncToken(newSyncToken);
 }
