@@ -4,6 +4,7 @@ const noYearDefaultYear = 1896; // To have leap year support
 const localFormat = "de-DE";
 const APP_NAME = "Google Contacts to Calendar Sync";
 const SEARCH_INDICATOR_PREFIX = "CONTACTS_SYNC_SEARCH_INDICATOR=";
+const syncTokenUpdateIntervall = 5;
 
 
 function getSyncToken(){
@@ -48,5 +49,5 @@ function getDateFromSingleValues(day, month, year){
 }
 
 function isSyncTokenToOld(syncTokenIssued){
-  return Date.now() - syncTokenIssued > 5*24*60*60
+  return Date.now() - syncTokenIssued > syncTokenUpdateIntervall*24*60*60*1000
 }
