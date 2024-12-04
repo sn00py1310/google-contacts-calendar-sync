@@ -18,7 +18,7 @@ class LogUtil {
   }
 
   log(msg, ...args){
-    if (this.logLevel > LogUtil.log) return;
+    if (this.logLevel > LogUtil.LOG) return;
     console.log(`${this.label}[LOG]: ${msg}`, ...args);
   }
 
