@@ -13,18 +13,18 @@ function getChangedPeople(syncToken) {
     });
 
     nextPageToken = con.nextPageToken;
-    // console.log("Page Token: " + con.nextPageToken)
+    // log.log("Page Token: " + con.nextPageToken)
 
     nextSyncToken = con.nextSyncToken;
 
     if(con.connections) peopleList = peopleList.concat(con.connections);
   } while (nextPageToken != undefined);
 
-  if(!peopleList.length) console.log("No entities to sync found");
+  if(!peopleList.length) log.info("No entities to sync found");
 
   let returnData = {"peopleList": peopleList}
   if (nextSyncToken) returnData["syncToken"] = nextSyncToken;
-  // console.log("Sync Token: " + con.nextSyncToken)
+  log.info("Sync Token: " + con.nextSyncToken)
 
   return returnData;
 }
@@ -46,34 +46,34 @@ function getAllowedCalendarIds() {
 
     });
     if (!calendars.items || calendars.items.length === 0) {
-      console.log('No calendars found.');
+      log.info('No calendars found.');
       return allowedCalendars;
     }
 
     // Print the calendar id and calendar summary
     for (const calendar of calendars.items) {
-      // console.log('%s (ID: %s)', calendar.summary, calendar.id, calendar.description);
+      log.debug('%s (ID: %s)', calendar.summary, calendar.id, calendar.description);
       if(calendar.description?.includes(getCalendarIndicator())) allowedCalendars.push(calendar.id);
     }
 
     pageToken = calendars.nextPageToken;
   } while (pageToken);
 
-  // console.log(allowedCalendars);
+  log.debug(allowedCalendars);
   return allowedCalendars;
 }
 
 
 function createSeriesForPerson(calendarId, person, search) {
 
-  // console.log('Person dump: %s', JSON.stringify(person, null, 2))
+  log.debug('Person dump: %s', JSON.stringify(person, null, 2))
   let personName = person.names[0].displayName;
   let personURI = "https://contacts.google.com/" + person.resourceName.replace(/^people\//,"person/");
-  console.log('Create events for person: %s (%s)', personName, personURI);
+  log.log('Create events for person: %s (%s)', personName, personURI);
 
   if (person.birthdays) {
     for (event of person.birthdays) {
-      // console.log('Birthday: %s', JSON.stringify(person, null, 2))
+      log.debug('Birthday: %s', JSON.stringify(person, null, 2))
       let personDate = event.date;
       let date = getDateFromSingleValues(personDate.day, personDate.month-1, personDate.year);
       let title = dynamicStringFormat('{0} hat Geburtstag', personName);
@@ -86,7 +86,7 @@ function createSeriesForPerson(calendarId, person, search) {
 
   if (person.events){
     for (event of person.events){
-      // console.log('Event: %s', JSON.stringify(event, null, 2))
+      log.debug('Event: %s', JSON.stringify(event, null, 2))
 
       let personDate = event.date;
       let date = getDateFromSingleValues(personDate.day, personDate.month-1, personDate.year);
@@ -131,7 +131,7 @@ function createSeries(calendarId, date, title, description, personURI){
   };
 
   let eventResponse = Calendar.Events.insert(event, calendarId);
-  // console.log(JSON.stringify(eventResponse, null, 2));
+  log.debug(JSON.stringify(eventResponse, null, 2));
 }
 
 function deleteForMultiple(calendarId, peopleList){
@@ -142,15 +142,15 @@ function deleteForMultiple(calendarId, peopleList){
     response = Calendar.Events.list(calendarId, {'q': calendarSearch, pageToken: nextPageToken});
     nextPageToken = response.nextPageToken;
 
-    console.log('Events found %s for search: %s on calendar %s', response.items.length, calendarSearch, calendarId); 
+    log.log('Events found %s for search: %s on calendar %s', response.items.length, calendarSearch, calendarId); 
     if (!response.items.length) continue;
 
     for(person of peopleList){
       let search = SEARCH_INDICATOR_PREFIX + person.resourceName;
-      console.log("For %s with search: %s", person.names[0].displayName, search);
+      log.debug("For %s with search: %s", person.names[0].displayName, search);
       deleteEventsForUser(response.items, search)
     }
-    console.log(nextPageToken);
+    log.info(`NextPageToken: ${nextPageToken}`);
   } while (nextPageToken)
 }
 
@@ -160,15 +160,15 @@ function deleteEventsForUser(events, search){
 
 
     if(event.recurringEventId && !deletedSeries.includes(event.recurringEventId)) {
-      console.log("event.recurringEventId: %s", event.recurringEventId);
+      log.debug("event.recurringEventId: %s", event.recurringEventId);
       Calendar.Events.remove(calendarId, event.id);
 
       deletedSeries.push(event.recurringEventId);
-      console.log("Deleted series %s", event.recurringEventId);
+      log.log("Deleted series %s", event.recurringEventId);
       continue;
     }
 
-    // console.log(event)
+    log.log("Delete single event %s", event)
     Calendar.Events.remove(calendarId, event.id);
   }
 }
@@ -193,26 +193,33 @@ function deleteAndCreate(allowedCalendarIds, peopleList){
 
 function main(){
 
+  log.info(`Request with SyncToken ${getSyncToken()} issued at ${getSyncTokenIssued()}`)
+
   let peopleListData = getChangedPeople(getSyncToken());
   let newSyncToken = peopleListData.syncToken;
   let peopleList = peopleListData.peopleList;
 
   // Get the list of connections/contacts of user's profile
-  //console.log('Connections: %s', JSON.stringify(peopleList, null, 2));
+  log.log('Connections: %s', JSON.stringify(peopleList, null, 2));
 
 
   // Smaller sample size
   // peopleList = peopleList.filter((c) => c.names[0].displayName.includes("TEST"))
-  // console.log(JSON.stringify(peopleList, null, 2))
+  // log.log(JSON.stringify(peopleList, null, 2))
 
   let allowedCalendarsIds = getAllowedCalendarIds();
   if(peopleList.length) deleteAndCreate(allowedCalendarsIds, peopleList);
 
   // Maybe possible race condition
   if (getSyncToken() === newSyncToken && isSyncTokenToOld(getSyncTokenIssued())){
-    console.log("SyncToken to old, getting a new one.");
+    log.info("SyncToken to old, getting a new one.");
     newSyncToken = getChangedPeople("").syncToken;
   }
 
-  if (getSyncToken() !== newSyncToken) setSyncToken(newSyncToken);
+  setSyncToken(newSyncToken);
+}
+
+function timerInvocation(){
+  log.setLogLevel(LogUtil.INFO);
+  main()
 }

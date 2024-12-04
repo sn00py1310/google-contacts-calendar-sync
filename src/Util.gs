@@ -6,6 +6,8 @@ const APP_NAME = "Google Contacts to Calendar Sync";
 const SEARCH_INDICATOR_PREFIX = "CONTACTS_SYNC_SEARCH_INDICATOR=";
 const syncTokenUpdateIntervall = 5;
 
+const log = new LogUtil();
+log.setLogLevel(LogUtil.INFO);
 
 function getSyncToken(){
   let token = properties.getProperty("syncToken");
@@ -20,6 +22,9 @@ function getSyncTokenIssued(){
 }
 
 function setSyncToken(syncToken){
+  let oldSyncToken = getSyncToken();
+  if (syncToken === oldSyncToken) return;
+
   properties.setProperty("syncToken", syncToken);
   properties.setProperty("syncTokenIssued", Date.now());
 }
