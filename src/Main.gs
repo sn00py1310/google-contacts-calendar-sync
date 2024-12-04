@@ -24,7 +24,7 @@ function getChangedPeople(syncToken) {
 
   let returnData = {"peopleList": peopleList}
   if (nextSyncToken) returnData["syncToken"] = nextSyncToken;
-  log.info("Sync Token: " + con.nextSyncToken)
+  log.info("Sync Token: " + nextSyncToken)
 
   return returnData;
 }
