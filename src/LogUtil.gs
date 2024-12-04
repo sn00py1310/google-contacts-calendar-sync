@@ -9,31 +9,31 @@ class LogUtil {
   }
 
   getLogLevel() {
-    return LogUtil.logLevel; 
+    return this.logLevel; 
   }
 
   debug(msg, ...args){
-    if (LogUtil.logLevel > LogUtil.DEBUG) return;
+    if (this.logLevel > LogUtil.DEBUG) return;
     console.log(`${this.label}[DEBUG]: ${msg}`, ...args);
   }
 
   log(msg, ...args){
-    if (LogUtil.logLevel > LogUtil.log) return;
+    if (this.logLevel > LogUtil.log) return;
     console.log(`${this.label}[LOG]: ${msg}`, ...args);
   }
 
   info(msg, ...args){
-    if (LogUtil.logLevel > LogUtil.INFO) return;
+    if (this.logLevel > LogUtil.INFO) return;
     console.log(`${this.label}[INFO]: ${msg}`, ...args);
   }
 
   warning(msg, ...args){
-    if (LogUtil.logLevel > LogUtil.WARNING) return;
+    if (this.logLevel > LogUtil.WARNING) return;
     console.log(`${this.label}[WARN]: ${msg}`, ...args);
   }
 
   error(msg, ...args){
-    if (LogUtil.logLevel > LogUtil.ERROR) return;
+    if (this.logLevel > LogUtil.ERROR) return;
     console.log(`${this.label}[ERROR]: ${msg}`, ...args);
   }
 
