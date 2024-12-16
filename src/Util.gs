@@ -18,7 +18,7 @@ function getSyncToken(){
 function getSyncTokenIssued(){
   let token = properties.getProperty("syncTokenIssued");
   if (token == undefined || token == null || token == "") return 0;
-  return token;
+  return token-0; // Convert the possible string to a number
 }
 
 function setSyncToken(syncToken){

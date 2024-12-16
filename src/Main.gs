@@ -193,7 +193,7 @@ function deleteAndCreate(allowedCalendarIds, peopleList){
 
 function main(){
 
-  log.info(`Request with SyncToken ${getSyncToken()} issued at ${getSyncTokenIssued()}`)
+  log.info(`Request with SyncToken ${getSyncToken()} issued at ${new Date(getSyncTokenIssued())} (${getSyncTokenIssued()})`)
 
   let peopleListData = getChangedPeople(getSyncToken());
   let newSyncToken = peopleListData.syncToken;
