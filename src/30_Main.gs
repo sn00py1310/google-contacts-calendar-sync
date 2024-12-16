@@ -76,7 +76,7 @@ function createSeriesForPerson(calendarId, person, search) {
       log.debug('Birthday: %s', JSON.stringify(person, null, 2))
       let personDate = event.date;
       let date = getDateFromSingleValues(personDate.day, personDate.month-1, personDate.year);
-      let title = dynamicStringFormat('{0} hat Geburtstag', personName);
+      let title = dynamicStringFormat(BIRTHDAY_TITLE, personName);
       let description = dynamicStringFormat('{0} \n\n\n\n{1}', date.toLocaleDateString(localFormat), search);
 
       createSeries(calendarId, date, title, description, personURI);
