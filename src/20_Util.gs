@@ -1,7 +1,7 @@
 const properties = PropertiesService.getScriptProperties();
 
 const log = new LogUtil();
-log.setLogLevel(LogUtil.DEBUG);
+log.setLogLevel(LogUtil.INFO);
 
 function getSyncToken(){
   let token = properties.getProperty("syncToken");

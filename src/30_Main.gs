@@ -24,7 +24,7 @@ function getChangedPeople(syncToken) {
 
   let returnData = {"peopleList": peopleList}
   if (nextSyncToken) returnData["syncToken"] = nextSyncToken;
-  log.info("Received syncToken: " + nextSyncToken)
+  log.info("(getChangedPeople) Received syncToken: " + nextSyncToken)
 
   return returnData;
 }
@@ -220,6 +220,6 @@ function main(){
 }
 
 function timerInvocation(){
-  log.setLogLevel(LogUtil.DEBUG);
+  log.setLogLevel(LogUtil.INFO);
   main()
 }
