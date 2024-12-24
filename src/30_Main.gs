@@ -13,7 +13,7 @@ function getChangedPeople(syncToken) {
     });
 
     nextPageToken = con.nextPageToken;
-    // log.log("Page Token: " + con.nextPageToken)
+    log.log("(getChangedPeople) nextPageToken: " + con.nextPageToken)
 
     nextSyncToken = con.nextSyncToken;
 
@@ -24,7 +24,7 @@ function getChangedPeople(syncToken) {
 
   let returnData = {"peopleList": peopleList}
   if (nextSyncToken) returnData["syncToken"] = nextSyncToken;
-  log.info("Sync Token: " + nextSyncToken)
+  log.info("Received syncToken: " + nextSyncToken)
 
   return returnData;
 }
@@ -150,7 +150,7 @@ function deleteForMultiple(calendarId, peopleList){
       log.debug("For %s with search: %s", person.names[0].displayName, search);
       deleteEventsForUser(response.items, search)
     }
-    log.info(`NextPageToken: ${nextPageToken}`);
+    log.info(`(deleteForMultiple) NextPageToken: ${nextPageToken}`);
   } while (nextPageToken)
 }
 
@@ -220,6 +220,6 @@ function main(){
 }
 
 function timerInvocation(){
-  log.setLogLevel(LogUtil.INFO);
+  log.setLogLevel(LogUtil.DEBUG);
   main()
 }

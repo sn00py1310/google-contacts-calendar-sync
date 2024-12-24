@@ -1,7 +1,7 @@
 const properties = PropertiesService.getScriptProperties();
 
 const log = new LogUtil();
-log.setLogLevel(LogUtil.INFO);
+log.setLogLevel(LogUtil.DEBUG);
 
 function getSyncToken(){
   let token = properties.getProperty("syncToken");
@@ -17,8 +17,14 @@ function getSyncTokenIssued(){
 
 function setSyncToken(syncToken){
   let oldSyncToken = getSyncToken();
-  if (syncToken === oldSyncToken) return;
 
+  if (syncToken == oldSyncToken && syncToken !== oldSyncToken) log.warning("Type casting equals on syncToken");
+  if (syncToken == oldSyncToken) {
+    log.warning("Old and new syncToken are the same");
+    return;
+  }
+
+  log.info(`Setting new syncToken ${syncToken}`);
   properties.setProperty("syncToken", syncToken);
   properties.setProperty("syncTokenIssued", Date.now());
 }
