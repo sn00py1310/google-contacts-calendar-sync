@@ -5,6 +5,13 @@ const SEARCH_INDICATOR_PREFIX = "CONTACTS_SYNC_SEARCH_INDICATOR=";
 const syncTokenUpdateIntervall = 5;  // In days
 
 
+const localFormatOptions = {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+};
+
+
 // Only change the configs below this line
 const BIRTHDAY_TITLE = '{0} hat Geburtstag';
 const localFormat = "de-DE";

@@ -77,7 +77,7 @@ function createSeriesForPerson(calendarId, person, search) {
       let personDate = event.date;
       let date = getDateFromSingleValues(personDate.day, personDate.month-1, personDate.year);
       let title = dynamicStringFormat(BIRTHDAY_TITLE, personName);
-      let description = dynamicStringFormat('{0} \n\n\n\n{1}', date.toLocaleDateString(localFormat), search);
+      let description = dynamicStringFormat('{0} \n\n\n\n{1}', date.toLocaleDateString(localFormat, localFormatOptions), search);
 
       createSeries(calendarId, date, title, description, personURI);
     }
@@ -91,7 +91,7 @@ function createSeriesForPerson(calendarId, person, search) {
       let personDate = event.date;
       let date = getDateFromSingleValues(personDate.day, personDate.month-1, personDate.year);
       let title = dynamicStringFormat('{0}: {1}', event.formattedType ,personName);
-      let description = dynamicStringFormat('{0} \n\n\n\n{1}', date.toLocaleDateString(localFormat), search);
+      let description = dynamicStringFormat('{0} \n\n\n\n{1}', date.toLocaleDateString(localFormat, localFormatOptions), search);
 
       createSeries(calendarId, date, title, description, personURI);
     }
