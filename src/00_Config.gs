@@ -7,8 +7,8 @@ const syncTokenUpdateIntervall = 5;  // In days
 
 const localFormatOptions = {
   year: "numeric",
-  month: "numeric",
-  day: "numeric",
+  month: "2-digit",
+  day: "2-digit",
 };
 
 
