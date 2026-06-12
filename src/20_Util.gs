@@ -1,7 +1,7 @@
 const properties = PropertiesService.getScriptProperties();
 
 const log = new LogUtil();
-log.setLogLevel(LogUtil.INFO);
+log.setLogLevel(LogUtil.DEBUG);
 
 function getSyncToken(){
   let token = properties.getProperty("syncToken");
@@ -27,6 +27,11 @@ function setSyncToken(syncToken){
   log.info(`Setting new syncToken ${syncToken}`);
   properties.setProperty("syncToken", syncToken);
   properties.setProperty("syncTokenIssued", Date.now());
+}
+
+function clearSyncToken(){
+  properties.setProperty("syncToken", "");
+  properties.setProperty("syncTokenIssued", "");
 }
 
 function getCalendarIndicator(){

@@ -191,7 +191,7 @@ function deleteAndCreate(allowedCalendarIds, peopleList){
   }
 }
 
-function main(){
+function sync(){
 
   log.info(`Request with SyncToken ${getSyncToken()} issued at ${new Date(getSyncTokenIssued())} (${getSyncTokenIssued()})`)
 
@@ -217,9 +217,4 @@ function main(){
   }
 
   setSyncToken(newSyncToken);
-}
-
-function timerInvocation(){
-  log.setLogLevel(LogUtil.INFO);
-  main()
 }
