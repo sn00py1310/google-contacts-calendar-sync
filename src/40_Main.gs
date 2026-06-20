@@ -1,4 +1,5 @@
 function main(){
+  showBanner();
   let retry_count = 0;
   while (retry_count < 3){
     try {

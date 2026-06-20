@@ -61,3 +61,18 @@ function getDateFromSingleValues(day, month, year){
 function isSyncTokenToOld(syncTokenIssued){
   return Date.now() - syncTokenIssued > syncTokenUpdateIntervall*24*60*60*1000
 }
+
+function showBanner(){
+  let longest = 0;
+  for (s of APP_BANNER_LINES){
+    longest = Math.max(longest, s.length);
+  }
+
+  let banner = ""
+  banner += "#".repeat(longest + 4) + "\n"
+  for (s of APP_BANNER_LINES){
+    banner += "# " + s + " ".repeat(longest - s.length) + " #" + "\n";
+  }
+  banner += "#".repeat(longest + 4);
+  console.info(banner);
+}
